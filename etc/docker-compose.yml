@@ -1,0 +1,11 @@
+my_site:
+    image: ubuntu-django:1.0
+    container_name: my_site
+    restart: always
+    volumes:
+        - /home/jiaort/personalspace/github/my-site3:/opt/django/project
+        - /home/jiaort/personalspace/github/my-site3/logs:/opt/django/logs
+        - /home/jiaort/personalspace/github/my-site3/venv:/opt/django/venv
+        - /home/jiaort/.ssh:/root/.ssh
+    ports:
+        - "8092:8000"

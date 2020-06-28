@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="焦润涛">
+  <meta name="copyright" content="焦润涛版权所有">
+  <meta name="baidu_union_verify" content="00e8e378a55e67dfe8ef4ccbcc7ab7d7">
+  <meta name="google-site-verification" content="dnyWZ80_3hVjbtwfL9HXBAp31ygEkNlTEopdwTRzhE8" />
+  <meta name="baidu-site-verification" content="xxnzwzyTfv" />
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="keywords" content="焦润涛、个人博客、焦润涛博客、Python、Django、MySql、uWSGI、HTML、Jquery、Redis、数据库、服务器、性能优化">
+  <meta name="description" content="焦润涛、个人博客、焦润涛博客、Python、Django、MySql、uWSGI、HTML、Jquery、Redis、数据库、服务器、性能优化。记录和分享学习的心得,感悟生活,留住感动,静静寻觅生活的美好">
+  {{ form.media }}
+  <link rel="shortcut icon" href="/static/css/logo.png" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="/static/plugins/waifu/waifu.css"/>
+  {% include "blog/css.html" %}
+  {% include "blog/js.html" %}
+
+  <script type="text/javascript">
+    $(function(){
+      var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'horizontal', // 水平切换选项
+        loop: true, // 循环模式选项
+        autoplay: true,  // 自动切换
+        autoplay: {
+          disableOnInteraction: false,
+        },
+        // 如果需要分页器
+        pagination: {
+          el: '.swiper-pagination',
+          clickable :true, // 导航按钮可以点击
+        },
+        // 如果需要前进后退按钮
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      })
+    });
+  </script>
+</head>
+{% comment %} <script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+<script>
+  tpwidget("init", {
+    "flavor": "bubble",
+    "location": "WX4FBXXFKE4F",
+    "geolocation": "enabled",
+    "position": "top-right",
+    "margin": "70px 0",
+    "language": "zh-chs",
+    "unit": "c",
+    "theme": "chameleon",
+    "uid": "U0DA2DC492",
+    "hash": "2a7b6e648b71691b7b1bbbd45c8e0e53"
+  });
+  tpwidget("show");
+</script> {% endcomment %}
+<script>
+$(function () {
+  jQuery.scrollUp({
+
+  });
+  jQuery(".aplayer-icon-lrc").addClass('hidden');  // 隐藏aplayer歌词图标
+  jQuery('pre').addClass("line-numbers").css("white-space", "pre-wrap");
+  jQuery('table').not('.Calendar table').addClass("table table-bordered table-striped");
+  // 解决锚点定位偏移的问题
+  jQuery("a[href^='#'][href!='#']").click(function() {
+    var target = document.getElementById(this.hash.slice(1));
+    if (!target) return;
+    var targetOffset = jQuery(target).offset().top - 70;
+    jQuery('html,body').animate({scrollTop: targetOffset}, 400);
+    return false;
+  });
+});
+</script>
+
+<body class="home blog layout-cs">
+  <div id="wrap">
+    <header id="header" role="banner">
+      <div class="container">
+        <div id="logo">
+          <div class="pull-left hidden-xs hidden-sm">
+            <h2 id="site-title">
+              <a href="{% url 'home' %}" rel="home">焦润涛博客</a>
+            </h2>
+          </div>
+          <div style="margin:25px 0 0 20px;" class="pull-left">
+            <nav class="nav nav-primary">
+              <div class="container">
+                <ul>
+                  <li><a href="{% url 'home' %}">首页</a></li>
+                  <li><a href="{% url 'archive' %}">文章归档</a></li>
+                  <li><a href="{% url 'message' %}">留言板</a></li>
+                  <li><a href="{% url 'links' %}">友情链接</a></li>
+                  <li><a href="{% url 'about' %}">关于我</a></li>
+                  <li class="hidden-xs">
+                    <div id="search" class="widget_search">
+                      <form role="search" method="get" class="search-form" action="/search/">
+                        <input value="{{ s|default:'' }}" name="s" class="s query" type="text">
+                      </form>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="social-icons hidden-xs hidden-sm">
+          <a href="https://github.com/runtaojiao" target="_blank"><i class="fa fa-github"></i></a>
+          <a href="{% url 'my_resume' %}" target="_blank"><i class="fa fa-user"></i></a>
+          <a href="{% url 'RSS' %}" target="_blank"><i class="fa fa-rss"></i></a>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </header>
+
+    <div style="height: 70px;"></div> <!-- 占位div -->
+
+    <div id="main" class="container">
+      <div id="content-sidebar-wrap">
+        <div id="content">
+          {% block banner %}{% endblock %}
+          {% if not is_home %}
+            <div class="breadcrumb">
+              {% block path %}{% endblock %}
+            </div>
+          {% endif %}
+          {% block content %}{% endblock %}
+        </div> <!-- #content -->
+
+        <aside id="sidebar-primary" role="complementary">
+          {% block side %}{% endblock %}
+        </aside>
+      </div> <!-- #content-sidebar -->
+    </div> <!-- #main -->
+
+    <div id="player"></div>  <!-- 音乐播放器 -->
+
+    <div class="waifu">
+      <div class="waifu-tips"></div>
+      <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+      <div class="waifu-tool">
+          <span class="fui-home"></span>
+          <span class="fui-chat"></span>
+          <span class="fui-eye"></span>
+          <span class="fui-user"></span>
+          <span class="fui-photo"></span>
+          <span class="fui-info-circle"></span>
+          <span class="fui-cross"></span>
+      </div>
+    </div>
+    <center>
+      {% include "blog/footer.html" %}
+    </center>
+  </div>
+  {% include "blog/verify_user.html" %}
+
+  <script type="text/javascript">
+    const ap = new APlayer({
+      container: document.getElementById('player'),
+      fixed: true,
+      volume: 0.5,
+      audio: {{ music_list|safe }}
+    });
+  </script>
+  <script type="text/javascript">
+    function verify_user(){
+      jQuery("#verify_user").modal('show');
+    }
+
+    // 打赏
+    function reward_modal_show(){
+      jQuery("#reward_modal").modal('show');
+    }
+
+    // 导航栏选中高亮
+    // jQuery(document).ready(function(){
+    //   jQuery(".nav a").each(function(){
+    //     $this = jQuery(this);
+    //     if($this[0].href==String(window.location)){
+    //       $this.css({"color": "#ea6f5a"});
+    //     }
+    //   });
+    // });
+    (function(){
+      // 百度统计
+      if (location.hostname.indexOf('runtao.sndz.top') > -1) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?c5cac36185e36026cd89df428e321b67";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+      // 百度推送
+      // var bp = document.createElement('script');
+      // var curProtocol = window.location.protocol.split(':')[0];
+      // if (curProtocol === 'https'){
+      //   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      // }else{
+      //   bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      // }
+      // var s = document.getElementsByTagName("script")[0];
+      // s.parentNode.insertBefore(bp, s);
+
+      // 360推送收录
+      (function(){
+        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?a44de98db818922042875e66a7a7a9fc":"https://jspassport.ssl.qhimg.com/11.0.1.js?a44de98db818922042875e66a7a7a9fc";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+      })();
+    })();
+  </script>
+  <!-- activate-power-mode -->
+  <script src="/static/js/activate-power-mode.js"></script>
+  <script type="text/javascript" src="/static/js/canvas-nest.js" count="100"></script>
+  <script src="/static/plugins/waifu/waifu-tips.js"></script>
+  <script src="/static/plugins/waifu/live2d.js"></script>
+  <script type="text/javascript">initModel("/static/plugins/waifu/")</script>
+  <script>
+    POWERMODE.colorful = true; // make power mode colorful
+    POWERMODE.shake = false; // turn off shake
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+my_site_supervisor:
+    image: ubuntu-django-supervisor:1.0
+    container_name: my_site_supervisor
+    restart: always
+    volumes:
+        - /home/jiaort/personalspace/github/my_site3:/opt/django/project
+        - /home/jiaort/personalspace/github/my_site3/logs_supervisor:/opt/django/logs
+        - /home/jiaort/personalspace/github/my_site3/venv_supervisor:/opt/django/venv
+        - /home/jiaort/.ssh:/root/.ssh
