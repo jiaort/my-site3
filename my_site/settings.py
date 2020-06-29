@@ -178,6 +178,14 @@ TEMPLATES = [
         },
     },
 ]
+# logger of libs
+from utils.libs.config.logger_settings import *
+# 重新更新所有handlers的filename，因为LOGGING是个DICT，在logger_conf内已经创建成功，需要再次更新
+LOG_ROOT = BASE_DIR
+for key, handler in LOGGING['handlers'].items():
+    if handler.get('filename', None):
+        # 将logs文件夹定义为项目根目录的上一层，这由docker部署目录结构决定
+        handler['filename'] = os.path.join(LOG_ROOT, 'logs', os.path.basename(handler['filename']))
 
 # import local settings
 try:
