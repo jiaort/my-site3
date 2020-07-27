@@ -9,7 +9,6 @@ from django.http import Http404
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_GET
-from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from utils.dlibs.tools.paginator import paginate
 from utils.dlibs.http.response import render_json, http_response
@@ -200,7 +199,7 @@ class RSSFeed(Feed):
 
     @classmethod
     def items(cls):
-        return Article.objects.order_by('-publish_time')
+        return Article.objects.filter(status=BlogStatus.PUBLISHED).order_by('-publish_time')
 
     def item_title(self, item):
         return item.title
@@ -225,7 +224,7 @@ def blog_search(request):
     date_list = get_date_list('tmp_date_list')
     error = False
 
-    query = Q()
+    query = Q(status=BlogStatus.PUBLISHED)
     s = request.GET.get('s') or ""
     if s:
         query &= (Q(title__icontains=s) | Q(classification__name=s) | Q(tags__name=s))
@@ -248,7 +247,7 @@ def message(request):
     page_num = request.GET.get("page") or 1
     comments, total = paginate(comments, page_num=page_num)
     own_messages = OwnerMessage.objects.all()
-    own_message = random.sample(own_messages, 1)[0] if own_messages else ""  # 随机返回一个主人寄语
+    own_message = random.sample(list(own_messages), 1)[0] if own_messages else ""  # 随机返回一个主人寄语
     date_list = get_date_list('tmp_date_list')
     classification = get_classifications('tmp_classification')
     new_post = get_popular_top10_blogs('tmp_new_post')
@@ -305,7 +304,7 @@ def add_comments_view(request):
         )
         ip_address = get_clientip(request)
         country, province, city = get_location_by_ip(ip_address)
-        anchor = "".join([random.choice("abcdefghijklmnopqrstuvwxyz1234567890") for i in xrange(16)])
+        anchor = "".join([random.choice("abcdefghijklmnopqrstuvwxyz1234567890") for i in range(16)])
         comment_data = {
             "user_id": user.id,
             "content": content,

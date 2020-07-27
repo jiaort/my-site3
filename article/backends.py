@@ -11,7 +11,6 @@ CACHE_TIME = 600  # second
 
 
 def get_articles(key):
-    articles = []
     if key in cache:
         articles = cache.get(key)
     else:
@@ -52,7 +51,6 @@ def get_tags_and_musics(tag_key, music_key):
 
 
 def get_popular_top10_blogs(key):
-    new_post = []
     if key in cache:
         new_post = cache.get(key)
     else:
@@ -62,7 +60,6 @@ def get_popular_top10_blogs(key):
 
 
 def get_classifications(key):
-    classification = []
     if key in cache:
         classification = cache.get(key)
     else:
@@ -72,7 +69,6 @@ def get_classifications(key):
 
 
 def get_date_list(key):
-    date_list = []
     if key in cache:
         date_list = cache.get(key)
     else:
@@ -82,7 +78,6 @@ def get_date_list(key):
 
 
 def get_archieve(key):
-    archieve = []
     if key in cache:
         archieve = cache.get(key)
     else:
@@ -92,7 +87,6 @@ def get_archieve(key):
 
 
 def get_links(key):
-    links = []
     if key in cache:
         links = cache.get(key)
     else:
@@ -102,7 +96,6 @@ def get_links(key):
 
 
 def get_carousel_imgs(key):
-    carouse_imgs = []
     if key in cache:
         carouse_imgs = cache.get(key)
     else:
@@ -112,7 +105,6 @@ def get_carousel_imgs(key):
 
 
 def get_cache_comments(key):
-    comments = []
     if key in cache:
         comments = cache.get(key)
     else:

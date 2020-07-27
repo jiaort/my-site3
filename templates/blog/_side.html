@@ -44,8 +44,11 @@
 	<h3 class="widget-title">分类目录</h3>
 	<ul>
     {% if classification %}
-      {% for x,y in classification %}
-        <li><a href="{% url 'classfiDetail' classfi=x %}">{{ x }} ( {{ y }} )</a></li>
+      {% for x, y in classification %}
+        <li>
+          <i class="fa fa-bookmark-o"></i>
+          <a href="{% url 'classfiDetail' classfi=x.name %}">{{ x.name }} ( {{ y }} )</a>
+        </li>
       {% endfor %}
     {% endif %}
 	</ul>

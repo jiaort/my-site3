@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import urllib
+import urllib.parse
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -53,7 +53,7 @@ def login_view(request):
         user = authenticate(username=user_name, password=password)
         if not user:
             messages.error(request, u'登录失败，请检查用户名密码后重试.')
-            return HttpResponseRedirect('%s?%s' % (reverse('login_view'), urllib.urlencode({'back_url': back_url})))
+            return HttpResponseRedirect('%s?%s' % (reverse('login_view'), urllib.parse.urlencode({'back_url': back_url})))
         login(request, user)
         return HttpResponseRedirect(reverse('blog_list'))
 

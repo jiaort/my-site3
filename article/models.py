@@ -1,6 +1,7 @@
 # coding: utf-8
 
 from django.db import models
+from django.urls import reverse
 from collections import OrderedDict
 from .constants import BlogStatus, CarouselImgType, EditorKind
 from utils.dlibs.models.mixins import TimeModelMixin
@@ -54,8 +55,7 @@ class Tag(models.Model):
     tag_list = TagManager()
 
     def get_absolute_url(self):
-        return('tagDetail', (),
-               {'tag': self.name})
+        return reverse('tagDetail', kwargs={'tag': self.name})
 
     def __unicode__(self):
         return self.name
@@ -68,15 +68,11 @@ class ClassManager(models.Manager):
 
     @classmethod
     def get_classify_list(cls):  # 返回文章分类列表, 每个分类以及对应的文章数目
-        classify = Classification.objects.all()  # 获取所有的分类
+        classify = list(Classification.objects.all())  # 获取所有的分类
         classify_list = []
         for i in range(len(classify)):
-            classify_list.append([])
-        for i in range(len(classify)):
-            temp = Classification.objects.get(name=classify[i])  # 获取当前分类
-            posts = temp.article_set.all()  # 获取当前分类下的所有文章
-            classify_list[i].append(classify[i])
-            classify_list[i].append(len(posts))
+            article_count = classify[i].article_set.count()  # 获取当前分类下的所有文章
+            classify_list.append([classify[i], article_count])
         return classify_list
 
 
@@ -96,7 +92,7 @@ class ArticleManager(models.Model):
 
     @classmethod
     def get_article_by_date(cls):  # 实现文章的按月归档, 返回 月份以及对应的文章数  如: [[2015.5,5],[2015.4,5]] ,
-        post_date = Article.objects.dates('publish_time', 'month')
+        post_date = Article.objects.filter(status=BlogStatus.PUBLISHED).dates('publish_time', 'month')
         post_date = post_date.reverse()  # 将post_date逆置,使之按月份递减的顺序排布
         date_list = []
         for i in range(len(post_date)):
@@ -104,7 +100,7 @@ class ArticleManager(models.Model):
         for i in range(len(post_date)):
             current_year = post_date[i].year
             current_month = post_date[i].month
-            temp_article = Article.objects.filter(publish_time__year=current_year, publish_time__month=current_month)
+            temp_article = Article.objects.filter(status=BlogStatus.PUBLISHED, publish_time__year=current_year, publish_time__month=current_month)
             temp_num = len(temp_article)
             date_list[i].append(post_date[i])
             date_list[i].append(temp_num)
@@ -115,7 +111,7 @@ class ArticleManager(models.Model):
         """
         :rtype: object
         """
-        post_date = Article.objects.dates('publish_time', 'month')
+        post_date = Article.objects.filter(status=BlogStatus.PUBLISHED).dates('publish_time', 'month')
         post_date = post_date.reverse()
 
         post_date_article = []
@@ -125,7 +121,7 @@ class ArticleManager(models.Model):
         for i in range(len(post_date)):
             current_year = post_date[i].year
             current_month = post_date[i].month
-            temp_article = Article.objects.filter(publish_time__year=current_year, publish_time__month=current_month)
+            temp_article = Article.objects.filter(publish_time__year=current_year, publish_time__month=current_month, status=BlogStatus.PUBLISHED)
             post_date_article[i] = temp_article
 
         dicts = OrderedDict()
@@ -148,7 +144,7 @@ class Article(models.Model):  # 文章
     date_list = ArticleManager()  # 自定义的管理器
 
     def get_absolute_url(self):
-        return ('detail', (), {
+        return reverse('detail', kwargs={
             'year': self.publish_time.year,
             'month': self.publish_time.strftime('%m'),
             'day': self.publish_time.strftime('%d'),
@@ -168,8 +164,8 @@ class Article(models.Model):  # 文章
 
     def get_before_article(self):  # 返回当前文章的前一篇文章
         index = 0
-        temp = Article.objects.order_by('id')
-        cur = Article.objects.get(id=self.id)
+        temp = Article.objects.filter(status=BlogStatus.PUBLISHED).order_by('id')
+        cur = Article.objects.filter(status=BlogStatus.PUBLISHED).get(id=self.id)
         count = 0
         for i in temp:
             if i.id == cur.id:
@@ -182,9 +178,9 @@ class Article(models.Model):  # 文章
 
     def get_after_article(self):  # 返回当前文章的后一篇文章
         index = 0
-        temp = Article.objects.order_by('id')
+        temp = Article.objects.filter(status=BlogStatus.PUBLISHED).order_by('id')
         max_num = len(temp) - 1
-        cur = Article.objects.get(id=self.id)
+        cur = Article.objects.filter(status=BlogStatus.PUBLISHED).get(id=self.id)
         count = 0
         for i in temp:
             if i.id == cur.id:
