@@ -3,9 +3,9 @@ my_site:
     container_name: my_site
     restart: always
     volumes:
-        - /home/jiaort/personalspace/github/my-site3:/opt/django/project
-        - /home/jiaort/personalspace/github/my-site3/logs:/opt/django/logs
-        - /home/jiaort/personalspace/github/my-site3/venv:/opt/django/venv
-        - /home/jiaort/.ssh:/root/.ssh
+        - /home/data/docker/my-site3:/opt/django/project
+        - /home/data/docker/my-site3/logs:/opt/django/logs
+        - /home/data/docker/my-site3/venv:/opt/django/venv
+        - /home/data/.ssh:/root/.ssh
     ports:
-        - "8092:8000"
+        - "8000:8000"

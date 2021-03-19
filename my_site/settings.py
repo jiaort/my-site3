@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'p-2_9jdgcawck*piav1d(kq-!((g#8#riop01(^5ilnl6f(ram'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 LOGIN_URL = '/manager/login/'
 
@@ -66,14 +66,14 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 3600,
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'my_site3',
-        'USER': 'personal',
+        'NAME': 'mysite',
+        'USER': 'root',
         'PASSWORD': 'qwer1234',
-        'HOST': '172.17.0.1',
+        'HOST': '172.18.0.1',
         'PORT': '3306',
         'TEST': {
-            'CHARSET': 'utf8',
-            'COLLATION': 'utf8_general_ci'
+            'CHARSET': 'utf8mb4',
+            'COLLATION': 'utf8mb4_general_ci'
         },
         'OPTIONS': {
             'connect_timeout': MYSQLDB_CONNECT_TIMEOUT,
@@ -89,7 +89,7 @@ SESSION_COOKIE_AGE = 24 * 60 * 60  # 当上例为False时，此项生效，单�
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://172.17.0.1:6379/1',
+        'LOCATION': 'redis://172.18.0.1:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PASSWORD': '',
@@ -185,7 +185,7 @@ LOG_ROOT = BASE_DIR
 for key, handler in LOGGING['handlers'].items():
     if handler.get('filename', None):
         # 将logs文件夹定义为项目根目录的上一层，这由docker部署目录结构决定
-        handler['filename'] = os.path.join(LOG_ROOT, 'logs', os.path.basename(handler['filename']))
+        handler['filename'] = os.path.join(LOG_ROOT, '../logs', os.path.basename(handler['filename']))
 
 # import local settings
 try:
