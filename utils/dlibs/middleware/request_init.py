@@ -36,7 +36,7 @@ class RequestInitMiddleware(BaseMiddleCls):
                 elif request.META['CONTENT_TYPE'] == 'application/x-www-form-urlencoded':
                     pass
                 # xml or json 时不处理request.body
-                elif request.body.startswith("<") or request.body.startswith("{") or request.body.startswith("["):
+                elif request.body.startswith(b"<") or request.body.startswith(b"{") or request.body.startswith(b"["):
                     pass
                 # 其他情况更新request.body内的query_string到request.parameters
                 elif '=' in request.body:
