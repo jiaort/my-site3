@@ -25,7 +25,7 @@ yum -y upgrade  # 应用更新
 ```
 2. 克隆项目
 ```bash
-git clone https://github.com/runtaojiao/my-site.git
+git clone https://github.com/jiaort/my-site.git
 ```
 3. 在项目根目录下创建项目所需要的文件夹
 ```bash
