@@ -37,4 +37,4 @@ class EditorKind(object):
     CHOICES_DICT = dict(CHOICES)
 
 
-DOMAIN = 'http://jiaoruntao.cn'
+DOMAIN = 'http://blog.jiaoruntao.cn'

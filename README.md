@@ -70,4 +70,4 @@ python manage.py createsuperuser
 1. 邮箱：heavycross@163.com
 2. QQ: 962069483
 
-**本人博客地址:** [我的博客](http://jiaoruntao.cn)
+**本人博客地址:** [我的博客](http://blog.jiaoruntao.cn)
