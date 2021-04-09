@@ -7,7 +7,7 @@ from qiniu import Auth, put_data
 # 需要填写你的 Access Key 和 Secret Key
 access_key = 'r5O7ETO-aXn6EejQSKb3j_j-WeImHLFcjZZ9i0Bj'
 secret_key = 'nTCQFVtjHAG5cDW-k2M_twnYrx0u_--ZrF55_S7B'
-domain_prefix = 'http://img.sndz.top/'
+domain_prefix = 'http://img.jiaoruntao.cn/'
 
 
 def upload_data(filestream, bucket_name):

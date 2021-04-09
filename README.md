@@ -16,21 +16,21 @@
 
 # 项目部署
 > 本项目的部署是在CentOS 7.2的系统上，其他CentOS发行版本或者类Unix系统的部署中可能有不同，请知悉。
-      
+
 
 1. 首先更新系统环境到最新，使其得到更好的兼容
 ```bash
 yum -y update  # 检查是否有可用更新
 yum -y upgrade  # 应用更新
-```    
+```
 2. 克隆项目
 ```bash
 git clone https://github.com/runtaojiao/my-site.git
-```    
+```
 3. 在项目根目录下创建项目所需要的文件夹
 ```bash
 mkdir logs  # 用来存储项目日志
-```    
+```
 4. 新建`local_settings.py`用来覆盖`settings.py`里面的数据库配置
 ```bash
 cp -r my_site/local_settings.py.template local_settings.py
@@ -70,4 +70,4 @@ python manage.py createsuperuser
 1. 邮箱：heavycross@163.com
 2. QQ: 962069483
 
-**本人博客地址:** [我的博客](http://runtao.sndz.top)
+**本人博客地址:** [我的博客](http://jiaoruntao.cn)
