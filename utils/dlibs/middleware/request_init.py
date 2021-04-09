@@ -39,7 +39,7 @@ class RequestInitMiddleware(BaseMiddleCls):
                 elif request.body.startswith(b"<") or request.body.startswith(b"{") or request.body.startswith(b"["):
                     pass
                 # 其他情况更新request.body内的query_string到request.parameters
-                elif '=' in request.body:
+                elif b'=' in request.body:
                     request.parameters.update(QueryDict(request.body, encoding='utf-8'))
 
                 # 3. 表单参数更新到request.parameters
